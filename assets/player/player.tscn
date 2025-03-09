@@ -1,0 +1,76 @@
+[gd_scene load_steps=10 format=3 uid="uid://fpsjx7128ibx"]
+
+[ext_resource type="Script" uid="uid://d4n04es244aik" path="res://assets/player/player.gd" id="1_0tbhg"]
+[ext_resource type="Material" uid="uid://ceiiocogxcjra" path="res://assets/player/ski_trail.tres" id="1_kad78"]
+[ext_resource type="Texture2D" uid="uid://cywglssyfohiq" path="res://assets/player/tiles/tile_0058.png" id="2_fc0r8"]
+[ext_resource type="Texture2D" uid="uid://b8l1grqih5hvi" path="res://assets/player/tiles/tile_0070.png" id="3_4bq4r"]
+[ext_resource type="Texture2D" uid="uid://b2upuuu331srv" path="res://assets/player/tilemaps/player_facing_tilemap.png" id="5_yx6nh"]
+[ext_resource type="FontFile" uid="uid://bkfn301ggbpx1" path="res://resources/fonts/Kenney Mini.ttf" id="6_uih4r"]
+[ext_resource type="Script" uid="uid://m4qb8tvkiysn" path="res://scenes/main/player_info.gd" id="8_k2ekr"]
+
+[sub_resource type="Gradient" id="Gradient_8mnci"]
+offsets = PackedFloat32Array(0.3, 0.5)
+colors = PackedColorArray(1, 1, 1, 0, 0.667044, 0.845543, 1, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_wugj2"]
+font = ExtResource("6_uih4r")
+font_size = 41
+font_color = Color(0, 0, 0, 1)
+
+[node name="Player" type="RigidBody2D"]
+material = ExtResource("1_kad78")
+script = ExtResource("1_0tbhg")
+player_tilemap = ExtResource("5_yx6nh")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0.0576172, 0)
+scale = Vector2(0.935598, 0.935598)
+polygon = PackedVector2Array(-8, -1.5, -6.5, 8, 6.5, 8, 8, -2, 4.5, -8, -4, -8)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0.0576172, 0)
+scale = Vector2(0.5, 0.5)
+zoom = Vector2(2, 2)
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 25.0
+drag_horizontal_enabled = true
+
+[node name="Line2D" type="Line2D" parent="."]
+top_level = true
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(-0.145386, -0.0240021)
+width = 32.0
+gradient = SubResource("Gradient_8mnci")
+texture = ExtResource("2_fc0r8")
+texture_mode = 2
+joint_mode = 2
+sharp_limit = 5.0
+round_precision = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(0.0576172, 0)
+scale = Vector2(0.996626, 1)
+texture = ExtResource("3_4bq4r")
+region_enabled = true
+region_rect = Rect2(160, 96, 16, 16)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = -13.0188
+anchor_top = -6.55
+anchor_right = -13.0188
+anchor_bottom = -6.55
+offset_left = 14727.7
+offset_top = 4087.4
+offset_right = 14819.7
+offset_bottom = 4139.4
+label_settings = SubResource("LabelSettings_wugj2")
+script = ExtResource("8_k2ekr")
+metadata/_edit_use_anchors_ = true
