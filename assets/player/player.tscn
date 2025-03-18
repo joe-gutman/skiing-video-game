@@ -1,17 +1,30 @@
-[gd_scene load_steps=10 format=3 uid="uid://fpsjx7128ibx"]
+[gd_scene load_steps=14 format=3 uid="uid://fpsjx7128ibx"]
 
 [ext_resource type="Script" uid="uid://d4n04es244aik" path="res://assets/player/player.gd" id="1_0tbhg"]
 [ext_resource type="Material" uid="uid://ceiiocogxcjra" path="res://assets/player/ski_trail.tres" id="1_kad78"]
 [ext_resource type="Texture2D" uid="uid://cywglssyfohiq" path="res://assets/player/tiles/tile_0058.png" id="2_fc0r8"]
-[ext_resource type="Texture2D" uid="uid://b8l1grqih5hvi" path="res://assets/player/tiles/tile_0070.png" id="3_4bq4r"]
+[ext_resource type="Shader" uid="uid://4vosdb187ynf" path="res://resources/shaders/shadow_catcher.gdshader" id="5_kwvpd"]
 [ext_resource type="Texture2D" uid="uid://b2upuuu331srv" path="res://assets/player/tilemaps/player_facing_tilemap.png" id="5_yx6nh"]
 [ext_resource type="FontFile" uid="uid://bkfn301ggbpx1" path="res://resources/fonts/Kenney Mini.ttf" id="6_uih4r"]
 [ext_resource type="Script" uid="uid://m4qb8tvkiysn" path="res://scenes/main/player_info.gd" id="8_k2ekr"]
+[ext_resource type="PackedScene" uid="uid://b3n6oqqq5w7g6" path="res://assets/player/model/model_character_ski.glb" id="8_kwvpd"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_kwvpd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_op4fd"]
+render_priority = 0
+shader = ExtResource("5_kwvpd")
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/shadow_opacity = 0.5
+shader_parameter/shadow_max_opacity = 1.0
 
 [sub_resource type="Gradient" id="Gradient_8mnci"]
 offsets = PackedFloat32Array(0.3, 0.5)
 colors = PackedColorArray(1, 1, 1, 0, 0.667044, 0.845543, 1, 1)
 metadata/_snap_enabled = true
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tb4ck"]
+viewport_path = NodePath("SpriteViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_wugj2"]
 font = ExtResource("6_uih4r")
@@ -23,6 +36,33 @@ material = ExtResource("1_kad78")
 script = ExtResource("1_0tbhg")
 player_tilemap = ExtResource("5_yx6nh")
 
+[node name="SpriteViewport" type="SubViewport" parent="."]
+transparent_bg = true
+
+[node name="Node3D" type="Node3D" parent="SpriteViewport"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SpriteViewport/Node3D"]
+transform = Transform3D(-0.863478, 0.399877, -0.307416, 0.0937944, 0.726153, 0.681105, 0.495589, 0.559285, -0.664523, -2.34108, 3.51805, -1.75062)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="SpriteViewport/Node3D"]
+transform = Transform3D(-1, 2.5411e-21, -8.74228e-08, -7.93297e-08, 0.420212, 0.907426, 3.67361e-08, 0.907426, -0.420212, 0, 1.92138, -0.855224)
+keep_aspect = 0
+fov = 31.0
+
+[node name="GroundPivot" type="Node3D" parent="SpriteViewport/Node3D"]
+
+[node name="AirbornePivot" type="Node3D" parent="SpriteViewport/Node3D/GroundPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.246653, 0)
+
+[node name="Character3D" parent="SpriteViewport/Node3D/GroundPivot/AirbornePivot" instance=ExtResource("8_kwvpd")]
+transform = Transform3D(1, 0, 0, 0, 1, 1.06581e-14, 0, -1.06581e-14, 1, -0.000775725, -0.254998, -0.0158374)
+
+[node name="ShadowCatcher" type="MeshInstance3D" parent="SpriteViewport/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00158167, -0.026879, 0.000453651)
+mesh = SubResource("PlaneMesh_kwvpd")
+surface_material_override/0 = SubResource("ShaderMaterial_op4fd")
+
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(0.0576172, 0)
 scale = Vector2(0.935598, 0.935598)
@@ -30,7 +70,6 @@ polygon = PackedVector2Array(-8, -1.5, -6.5, 8, 6.5, 8, 8, -2, 4.5, -8, -4, -8)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0.0576172, 0)
-scale = Vector2(0.5, 0.5)
 zoom = Vector2(2, 2)
 process_callback = 0
 position_smoothing_enabled = true
@@ -53,11 +92,10 @@ round_precision = 5
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
 texture_filter = 1
-position = Vector2(0.0576172, 0)
-scale = Vector2(0.996626, 1)
-texture = ExtResource("3_4bq4r")
+scale = Vector2(0.25, 0.25)
+texture = SubResource("ViewportTexture_tb4ck")
 region_enabled = true
-region_rect = Rect2(160, 96, 16, 16)
+region_rect = Rect2(0, 0, 512, 512)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
