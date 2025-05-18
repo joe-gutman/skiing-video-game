@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://d4n04es244aik" path="res://assets/player/player.gd" id="1_0tbhg"]
 [ext_resource type="Material" uid="uid://ceiiocogxcjra" path="res://assets/player/ski_trail.tres" id="1_kad78"]
-[ext_resource type="Texture2D" uid="uid://cywglssyfohiq" path="res://assets/player/tiles/tile_0058.png" id="2_fc0r8"]
 [ext_resource type="Shader" uid="uid://4vosdb187ynf" path="res://resources/shaders/shadow_catcher.gdshader" id="5_kwvpd"]
-[ext_resource type="Texture2D" uid="uid://b2upuuu331srv" path="res://assets/player/tilemaps/player_facing_tilemap.png" id="5_yx6nh"]
-[ext_resource type="FontFile" uid="uid://bkfn301ggbpx1" path="res://resources/fonts/Kenney Mini.ttf" id="6_uih4r"]
-[ext_resource type="Script" uid="uid://m4qb8tvkiysn" path="res://scenes/main/player_info.gd" id="8_k2ekr"]
+[ext_resource type="Shader" uid="uid://dfpm4wv77i0ra" path="res://assets/ground/ground_normal.gdshader" id="7_kwvpd"]
+[ext_resource type="Texture2D" uid="uid://v6x3fbgcvcnl" path="res://icon.svg" id="7_tb4ck"]
 [ext_resource type="PackedScene" uid="uid://b3n6oqqq5w7g6" path="res://assets/player/model/model_character_ski.glb" id="8_kwvpd"]
+[ext_resource type="Script" uid="uid://bnoyatxw3v0dn" path="res://assets/ground/ground_normal.gd" id="9_op4fd"]
+[ext_resource type="Script" uid="uid://bsvk403eeadqa" path="res://assets/player/debug_normal.gd" id="10_m2mll"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_kwvpd"]
 
@@ -18,23 +18,38 @@ shader_parameter/shadow_color = Color(0, 0, 0, 1)
 shader_parameter/shadow_opacity = 0.5
 shader_parameter/shadow_max_opacity = 1.0
 
-[sub_resource type="Gradient" id="Gradient_8mnci"]
-offsets = PackedFloat32Array(0.3, 0.5)
-colors = PackedColorArray(1, 1, 1, 0, 0.667044, 0.845543, 1, 1)
-metadata/_snap_enabled = true
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tb4ck"]
+light_mode = 1
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_tb4ck"]
 viewport_path = NodePath("SpriteViewport")
 
-[sub_resource type="LabelSettings" id="LabelSettings_wugj2"]
-font = ExtResource("6_uih4r")
-font_size = 41
-font_color = Color(0, 0, 0, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m2mll"]
+shader = ExtResource("7_kwvpd")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/height_min = 0.0
+shader_parameter/height_max = 1.0
+shader_parameter/slope_spacing = 1.128
+shader_parameter/slope_width = 0.145
+shader_parameter/wave_amplitude = 0.169
+shader_parameter/wave_frequency = 2.047
+shader_parameter/texture_dimension = Vector2(1024, 1024)
+shader_parameter/texture_scale = 0.5
+shader_parameter/edge_width = 0.302
+shader_parameter/edge_curve = 0.077
+shader_parameter/normal_strength = 50.412
+shader_parameter/world_pos = Vector2(0, 0)
 
 [node name="Player" type="RigidBody2D"]
+light_mask = 2
+visibility_layer = 2
+z_as_relative = false
+y_sort_enabled = true
 material = ExtResource("1_kad78")
+disable_mode = 2
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_0tbhg")
-player_tilemap = ExtResource("5_yx6nh")
 
 [node name="SpriteViewport" type="SubViewport" parent="."]
 transparent_bg = true
@@ -68,47 +83,30 @@ position = Vector2(0.0576172, 0)
 scale = Vector2(0.935598, 0.935598)
 polygon = PackedVector2Array(-8, -1.5, -6.5, 8, 6.5, 8, 8, -2, 4.5, -8, -4, -8)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0.0576172, 0)
-zoom = Vector2(2, 2)
-process_callback = 0
-position_smoothing_enabled = true
-position_smoothing_speed = 25.0
-drag_horizontal_enabled = true
-
-[node name="Line2D" type="Line2D" parent="."]
-top_level = true
-texture_filter = 1
-texture_repeat = 2
-position = Vector2(-0.145386, -0.0240021)
-width = 32.0
-gradient = SubResource("Gradient_8mnci")
-texture = ExtResource("2_fc0r8")
-texture_mode = 2
-joint_mode = 2
-sharp_limit = 5.0
-round_precision = 5
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
+z_index = 2
 texture_filter = 1
+material = SubResource("CanvasItemMaterial_tb4ck")
+position = Vector2(0, -1)
 scale = Vector2(0.25, 0.25)
 texture = SubResource("ViewportTexture_tb4ck")
 region_enabled = true
 region_rect = Rect2(0, 0, 512, 512)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(500, 500)
+render_target_update_mode = 4
 
-[node name="Label" type="Label" parent="CanvasLayer"]
-anchors_preset = -1
-anchor_left = -13.0188
-anchor_top = -6.55
-anchor_right = -13.0188
-anchor_bottom = -6.55
-offset_left = 14727.7
-offset_top = 4087.4
-offset_right = 14819.7
-offset_bottom = 4139.4
-label_settings = SubResource("LabelSettings_wugj2")
-script = ExtResource("8_k2ekr")
-metadata/_edit_use_anchors_ = true
+[node name="GroundNormal" type="Sprite2D" parent="SubViewport"]
+visible = false
+material = SubResource("ShaderMaterial_m2mll")
+position = Vector2(1, 0)
+scale = Vector2(47.228, 47.228)
+texture = ExtResource("7_tb4ck")
+script = ExtResource("9_op4fd")
+
+[node name="DebugNormal" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(4.19445, 4.19445)
+texture = ExtResource("7_tb4ck")
+script = ExtResource("10_m2mll")

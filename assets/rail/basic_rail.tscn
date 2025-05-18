@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://bur5yjfs6tljo"]
+
+[ext_resource type="Script" uid="uid://d1rpra7ftplfw" path="res://resources/scripts/line2D_rail.gd" id="1_afai6"]
+
+[sub_resource type="Curve2D" id="Curve2D_v34lj"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 16, 60, -21.9374, -64.6024, 21.9374, 64.6024, 20, 212, -8.05785, -131.894, 8.05785, 131.894, 152, 452)
+}
+point_count = 3
+
+[node name="rail_grind" type="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(-49, -17)
+curve = SubResource("Curve2D_v34lj")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(16, 60)
+rotation = 1.54449
+
+[node name="Line2D" type="Line2D" parent="Path2D"]
+position = Vector2(-1, -2)
+texture_mode = 2
+script = ExtResource("1_afai6")

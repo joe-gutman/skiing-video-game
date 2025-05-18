@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq3e1in76flvx"]
+
+[ext_resource type="PackedScene" uid="uid://c03ana4psenca" path="res://assets/world/world.tscn" id="2_dremx"]
+[ext_resource type="PackedScene" uid="uid://fpsjx7128ibx" path="res://assets/player/player.tscn" id="3_dnc2d"]
+
+[node name="main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("3_dnc2d")]
+position = Vector2(0, 1)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, -1)
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_vertical_offset = 1.0
+drag_bottom_margin = 0.0
+
+[node name="World" parent="." instance=ExtResource("2_dremx")]
+position = Vector2(6, 1)

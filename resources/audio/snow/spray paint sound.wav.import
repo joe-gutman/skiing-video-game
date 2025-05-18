@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://7awx8unuknqa"
+path="res://.godot/imported/spray paint sound.wav-3760fac7f5daced2d54c2f19002d2681.sample"
+
+[deps]
+
+source_file="res://resources/audio/snow/spray paint sound.wav"
+dest_files=["res://.godot/imported/spray paint sound.wav-3760fac7f5daced2d54c2f19002d2681.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
