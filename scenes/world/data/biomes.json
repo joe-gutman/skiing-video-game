@@ -1,0 +1,115 @@
+{
+  "snowy_plain": {
+    "name": "Snowy Plains",
+    "notes": "Open plains covered in snow, with sparse grass vegetation.",
+    "biome_tileset": "res://scenes/world/tileset.tres",
+    "tileset_src_id": 0,
+    "layers": {
+      "ground": {
+        "density": 1.0,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "snow_ground", "weight": 20 },
+          { "name": "snow_ground_variation", "weight": 1 }
+        ]
+      },
+      "grass": {
+        "density": 0.1,
+        "weight": 0.5,
+        "tiles": [
+          { "name": "snow_grass", "weight": 2 }
+        ]
+      }
+    },
+    "weather": "Snowfall",
+    "temperature": 20,
+    "ambient_sounds": ["snowy_wind.ogg"],
+    "sky_color": "#B0C4DE",
+    "fog_color": "#D3D3D3",
+    "biome_density": 1.0
+  },
+  "snowy_forest": {
+    "name": "Snowy Forest",
+    "notes": "Dense forest covered in snow, mostly alive trees.",
+    "biome_tileset": "res://scenes/world/tileset.tres",
+    "tileset_src_id": 0,
+    "layers": {
+      "ground": {
+        "density": 1.0,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "snow_ground", "weight": 20 },
+          { "name": "snow_ground_variation", "weight": 1 }
+        ]
+      },
+      "trees": {
+        "density": 1.0,
+        "weight": 2.0,
+        "tiles": [
+          { "name": "snow_tree", "weight": 3.5 },
+          { "name": "snow_dead_tree", "weight": 1.0 },
+          { "name": "stump", "weight": 0.5 }
+        ]
+      },
+      "bushes": {
+        "density": 0.2,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "snow_bush", "weight": 2 }
+        ]
+      },
+      "decorations": {
+        "density": 0.02,
+        "weight": 0.5,
+        "tiles": [
+          { "name": "snowman", "weight": 0.2 }
+        ]
+      }
+    },
+    "weather": "Snowfall",
+    "temperature": 25,
+    "ambient_sounds": ["forest_wind.ogg"],
+    "sky_color": "#BFCDE6",
+    "fog_color": "#E6E6F2",
+    "biome_density": 0.5
+  },
+  "forest":{
+    "name": "Forest",
+    "notes": "Lush forest with a variety of trees and undergrowth.",
+    "biome_tileset": "res://scenes/world/tileset.tres",
+    "tileset_src_id": 1,
+    "layers": {
+      "ground": {
+        "density": 1.0,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "grass_ground", "weight": 20 },
+          { "name": "grass_ground_variation", "weight": 10 },
+          { "name": "flower_grass_ground", "weight": 5 }
+        ]
+      },
+      "trees": {
+        "density": 0.5,
+        "weight": 2.0,
+        "tiles": [
+          { "name": "green_tree", "weight": 4 },
+          { "name": "yellow_tree", "weight": 3 }
+        ]
+      },
+      "bushes": {
+        "density": 0.3,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "big_bush", "weight": 1 },
+          { "name": "green_bush", "weight": 2 }
+        ]
+      }
+    },
+    "weather": "Sunny",
+    "temperature": 30,
+    "ambient_sounds": ["forest_birds.ogg", "forest_wind.ogg"],
+    "sky_color": "#87CEEB",
+    "fog_color": "#C0D6E4",
+    "biome_density": 1.0
+  }
+}

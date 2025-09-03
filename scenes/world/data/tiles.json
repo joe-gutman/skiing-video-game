@@ -1,0 +1,19 @@
+{
+  "snow_ground": { "atlas_coords": [0, 0], "src_id": 0 },
+  "snow_ground_variation": { "atlas_coords": [5, 0], "src_id": 0 },
+  "snow_grass": { "atlas_coords": [7, 2], "src_id": 0 },
+  "snow_tree": { "atlas_coords": [6, 0], "src_id": 0 },
+  "snow_bush": { "atlas_coords": [6, 2], "src_id": 0 },
+  "snow_dead_tree": { "atlas_coords": [7, 0], "src_id": 0 },
+  "snow_dead_grass": { "atlas_coords": [7, 2], "src_id": 0 },
+  "stump": { "atlas_coords": [11, 3], "src_id": 0 },
+  "rock": { "atlas_coords": [9, 6], "src_id": 0 },
+  "snowman": { "atlas_coords": [9, 5], "src_id": 0 },
+  "grass_ground": { "atlas_coords": [0, 0], "src_id": 1 },
+  "grass_ground_variation": { "atlas_coords": [1, 0], "src_id": 1 },
+  "flower_grass_ground": { "atlas_coords": [2, 0], "src_id": 1 },
+  "green_tree": { "atlas_coords": [4, 0], "src_id": 1 },
+  "yellow_tree": { "atlas_coords": [3, 0], "src_id": 1 },
+  "green_bush": { "atlas_coords": [4, 2], "src_id": 1 },
+  "big_bush": { "atlas_coords": [5, 0], "src_id": 1 }
+}

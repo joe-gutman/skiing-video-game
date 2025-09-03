@@ -1,0 +1,84 @@
+[gd_scene load_steps=11 format=3 uid="uid://xl2daaugr31l"]
+
+[ext_resource type="Material" uid="uid://b6es0e5nho5cx" path="res://scenes/player/ski_trail.tres" id="1_l2tcj"]
+[ext_resource type="Script" uid="uid://bimce42ubbvme" path="res://scenes/player/player.gd" id="2_2753n"]
+[ext_resource type="PackedScene" uid="uid://d4mlpn3vfktr3" path="res://scenes/player/model/model_character_ski.glb" id="3_3bosa"]
+[ext_resource type="Shader" uid="uid://4vosdb187ynf" path="res://assets/shaders/shadow_catcher.gdshader" id="4_rxkqc"]
+[ext_resource type="Script" uid="uid://bpsnvs3x3u5m7" path="res://assets/scripts/shadow_toggle.gd" id="5_p47bc"]
+
+[sub_resource type="Environment" id="Environment_p47bc"]
+background_energy_multiplier = 0.27
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.18
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_kwvpd"]
+lightmap_size_hint = Vector2i(12, 12)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_op4fd"]
+render_priority = 0
+shader = ExtResource("4_rxkqc")
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/shadow_opacity = 0.5
+shader_parameter/shadow_max_opacity = 1.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tb4ck"]
+light_mode = 1
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tb4ck"]
+viewport_path = NodePath("SpriteViewport")
+
+[node name="Player" type="RigidBody2D"]
+light_mask = 2
+visibility_layer = 2
+material = ExtResource("1_l2tcj")
+disable_mode = 2
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("2_2753n")
+rotation_speed = 300.0
+
+[node name="SpriteViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="Node3D" type="Node3D" parent="SpriteViewport"]
+
+[node name="Camera3D" type="Camera3D" parent="SpriteViewport/Node3D"]
+transform = Transform3D(-1, 2.5411e-21, -8.74228e-08, -7.93297e-08, 0.420212, 0.907426, 3.67361e-08, 0.907426, -0.420212, 0, 1.92138, -0.855224)
+keep_aspect = 0
+environment = SubResource("Environment_p47bc")
+current = true
+fov = 30.0
+near = 0.003
+
+[node name="GroundPivot" type="Node3D" parent="SpriteViewport/Node3D"]
+
+[node name="AirbornePivot" type="Node3D" parent="SpriteViewport/Node3D/GroundPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.246653, 0)
+
+[node name="Character3D" parent="SpriteViewport/Node3D/GroundPivot/AirbornePivot" instance=ExtResource("3_3bosa")]
+transform = Transform3D(1, 0, 0, 0, 1, 1.06581e-14, 0, -1.06581e-14, 1, -0.000775725, -0.254998, -0.0158374)
+
+[node name="ShadowCatcher" type="MeshInstance3D" parent="SpriteViewport/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00158167, -0.026879, 0.000453651)
+mesh = SubResource("PlaneMesh_kwvpd")
+surface_material_override/0 = SubResource("ShaderMaterial_op4fd")
+script = ExtResource("5_p47bc")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+light_mask = 2
+visibility_layer = 2
+z_as_relative = false
+position = Vector2(4.76837e-07, -0.207734)
+scale = Vector2(0.546875, 0.481846)
+polygon = PackedVector2Array(-8, -1.5, -6.47459, 19.239, 6.35143, 19.239, 8, -2, 4.5, -8, -4, -8)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_tb4ck")
+position = Vector2(0, -1.19209e-07)
+scale = Vector2(0.189157, 0.189157)
+texture = SubResource("ViewportTexture_tb4ck")
+region_enabled = true
+region_rect = Rect2(0, 0, 256, 256)

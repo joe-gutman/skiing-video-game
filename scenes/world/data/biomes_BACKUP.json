@@ -1,0 +1,140 @@
+{
+  "snowy_forest": {
+    "name": "Snowy Forest",
+    "notes": "Dense forest covered in snow, mostly alive trees.",
+    "layers": {
+      "ground": {
+        "density": 1.0,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "pure_snow", "weight": 20 },
+          { "name": "snow_variation", "weight": 1 }
+        ]
+      },
+      "trees": {
+        "density": 0.35,
+        "weight": 2.0,
+        "tiles": [
+          { "name": "tree", "weight": 3.5 },
+          { "name": "dead_tree", "weight": 1.5 },
+          { "name": "stump", "weight": 0.5 }
+        ]
+      },
+      "bushes": {
+        "density": 0.2,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "bush", "weight": 2 }
+        ]
+      },
+      "decorations": {
+        "density": 0.02,
+        "weight": 0.5,
+        "tiles": [
+          { "name": "snowman", "weight": 0.2 }
+        ]
+      }
+    },
+    "weather": "Snowfall",
+    "temperature": 25,
+    "ambient_sounds": ["forest_wind.ogg"],
+    "sky_color": "#BFCDE6",
+    "fog_color": "#E6E6F2",
+    "noise_params": {
+      "scale": 10,
+      "octaves": 2,
+      "persistence": 0.5,
+      "lacunarity": 2.0
+    },
+    "biome_density": 1.0
+  },
+
+  "snowy_plains": {
+    "name": "Snowy Plains",
+    "notes": "Open plains with scattered plants, grass, and occasional trees.",
+    "layers": {
+      "ground": {
+        "density": 1.0,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "pure_snow", "weight": 20 },
+          { "name": "snow_variation", "weight": 1 }
+        ]
+      },
+      "trees": {
+        "density": 0.1,
+        "weight": 1.5,
+        "tiles": [
+          { "name": "tree", "weight": 1.0 }
+        ]
+      },
+      "bushes": {
+        "density": 0.1,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "bush", "weight": 0.5 }
+        ]
+      },
+      "grass": {
+        "density": 0.1,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "dead_grass", "weight": 0.5 }
+        ]
+      },
+      "decorations": {
+        "density": 0.05,
+        "weight": 0.5,
+        "tiles": [
+          { "name": "snowman", "weight": 0.3 }
+        ]
+      }
+    },
+    "weather": "Cold winds",
+    "temperature": 20,
+    "ambient_sounds": ["wind_howl_1.ogg"],
+    "sky_color": "#CCD9E6",
+    "fog_color": "#E6E6F2",
+    "noise_params": {
+      "scale": 50,
+      "octaves": 3,
+      "persistence": 0.4,
+      "lacunarity": 2.0
+    },
+    "biome_density": 0.25
+  },
+
+  "barren_snowy_plains": {
+    "name": "Barren Snowy Plains",
+    "notes": "Flat, open snowy landscape with very sparse vegetation.",
+    "layers": {
+      "ground": {
+        "density": 1.0,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "pure_snow", "weight": 20 },
+          { "name": "snow_variation", "weight": 1 }
+        ]
+      },
+      "grass": {
+        "density": 0.05,
+        "weight": 1.0,
+        "tiles": [
+          { "name": "dead_grass", "weight": 0.5 }
+        ]
+      }
+    },
+    "weather": "Strong winds",
+    "temperature": 10,
+    "ambient_sounds": ["wind_howl_2.ogg"],
+    "sky_color": "#D9D9E6",
+    "fog_color": "#F2F2FA",
+    "noise_params": {
+      "scale": 60,
+      "octaves": 2,
+      "persistence": 0.3,
+      "lacunarity": 1.8
+    },
+    "biome_density": 0.25
+  }
+}

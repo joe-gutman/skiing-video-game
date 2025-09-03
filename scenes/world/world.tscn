@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c03ana4psenca"]
+
+[ext_resource type="Script" uid="uid://ihc00xey7udh" path="res://scenes/world/world_generator.gd" id="1_sl2e5"]
+
+[node name="World" type="Node2D"]
+z_as_relative = false
+y_sort_enabled = true
+texture_filter = 1
+script = ExtResource("1_sl2e5")

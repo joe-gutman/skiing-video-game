@@ -1,0 +1,45 @@
+{
+  "name": "Frostlands",
+  "seed": 123456, 
+  "biomes": [
+    {
+      "active": true,
+      "biome": "snowy_plain",
+      "noise_params": {
+        "scale": 25,
+        "octaves": 1,
+        "persistence": 1.0,
+        "lacunarity": 5.0,
+        "freq_x": 1.0,
+        "freq_y": 0.5 
+      },
+      "weight": 1.0
+    },
+    {
+      "active": true,
+      "biome": "snowy_forest",
+      "noise_params": {
+        "scale": 15,
+        "octaves": 1,
+        "persistence": 1.0,
+        "lacunarity": 5.0,
+        "freq_x": 1.0,
+        "freq_y": 0.005 
+      },
+      "weight": 1.0
+    },
+    {
+      "active": false,
+      "biome": "forest",
+      "noise_params": {
+        "scale": 5,
+        "octaves": 1, 
+        "persistence": 0.5,
+        "lacunarity": 5.0,
+        "freq_x": 1.0,
+        "freq_y": 0.02
+      },
+      "weight": 1.0
+    }
+  ]
+}

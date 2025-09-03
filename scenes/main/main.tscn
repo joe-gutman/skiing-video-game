@@ -1,15 +1,43 @@
-[gd_scene load_steps=3 format=3 uid="uid://bq3e1in76flvx"]
+[gd_scene load_steps=7 format=3 uid="uid://bq3e1in76flvx"]
 
-[ext_resource type="PackedScene" uid="uid://c03ana4psenca" path="res://assets/world/world.tscn" id="2_dremx"]
-[ext_resource type="PackedScene" uid="uid://fpsjx7128ibx" path="res://assets/player/player.tscn" id="3_dnc2d"]
+[ext_resource type="Script" uid="uid://ihc00xey7udh" path="res://scenes/world/world_generator.gd" id="1_k2fmo"]
+[ext_resource type="Script" uid="uid://c2x8vavlckr72" path="res://scenes/main/sun.gd" id="3_6q06x"]
+[ext_resource type="PackedScene" uid="uid://xl2daaugr31l" path="res://scenes/player/player.tscn" id="3_dnc2d"]
+[ext_resource type="PackedScene" uid="uid://c05mp6v02jr5q" path="res://scenes/prop/prop.tscn" id="3_k2fmo"]
+[ext_resource type="TileSet" uid="uid://0n570eog0y1x" path="res://scenes/world/tileset.tres" id="3_l3cfh"]
+[ext_resource type="Script" uid="uid://biodc7jn0yx5j" path="res://scenes/player/player_camera.gd" id="6_ow5a4"]
 
-[node name="main" type="Node2D"]
+[node name="Playfield" type="Node2D" node_paths=PackedStringArray("ground", "props")]
+z_as_relative = false
+script = ExtResource("1_k2fmo")
+prop_template = ExtResource("3_k2fmo")
+ground = NodePath("Ground")
+props = NodePath("Props")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.835343, 0.243471, -0.492874, -0.180446, 0.725459, 0.664191, 0.519271, 0.643764, -0.562073, -2.34108, 3.59592, -1.8559)
+shadow_enabled = true
+shadow_bias = 0.0
+shadow_normal_bias = 2.167
+shadow_opacity = 0.69
+shadow_blur = 0.02
+directional_shadow_split_3 = 0.039
+directional_shadow_fade_start = 0.0
+directional_shadow_max_distance = 234.3
+script = ExtResource("3_6q06x")
+
+[node name="Ground" type="TileMapLayer" parent="."]
+z_index = -4096
+z_as_relative = false
+tile_set = ExtResource("3_l3cfh")
 
 [node name="Player" parent="." instance=ExtResource("3_dnc2d")]
-position = Vector2(0, 1)
+mass = 2.75
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(0, -1)
+position = Vector2(1, -8)
+scale = Vector2(0.996517, 1)
+zoom = Vector2(1.5, 1.5)
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
@@ -17,6 +45,6 @@ drag_horizontal_enabled = true
 drag_vertical_enabled = true
 drag_vertical_offset = 1.0
 drag_bottom_margin = 0.0
+script = ExtResource("6_ow5a4")
 
-[node name="World" parent="." instance=ExtResource("2_dremx")]
-position = Vector2(6, 1)
+[node name="Props" type="Node2D" parent="."]
