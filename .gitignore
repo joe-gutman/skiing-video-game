@@ -1,12 +1,12 @@
 # Graphics
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.tga
-*.bmp
-*.ico
-*.svg
+# *.png
+# *.jpg
+# *.jpeg
+# *.gif
+# *.tga
+# *.bmp
+# *.ico
+# *.svg
 *.webp
 *.psd
 *.sbs
