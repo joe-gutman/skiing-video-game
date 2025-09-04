@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://qsxs3o6057qg"
+path="res://.godot/imported/Drop Rock On Rock Debris_RBD 03.wav-0db6fbaf20424716441d28f24daba89a.sample"
+
+[deps]
+
+source_file="res://assets/sound_effects/collide/Drop Rock On Rock Debris_RBD 03.wav"
+dest_files=["res://.godot/imported/Drop Rock On Rock Debris_RBD 03.wav-0db6fbaf20424716441d28f24daba89a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -71,14 +71,14 @@ light_mask = 2
 visibility_layer = 2
 z_as_relative = false
 position = Vector2(4.76837e-07, -0.207734)
-scale = Vector2(0.546875, 0.481846)
+scale = Vector2(0.393081, 0.346339)
 polygon = PackedVector2Array(-8, -1.5, -6.47459, 19.239, 6.35143, 19.239, 8, -2, 4.5, -8, -4, -8)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 material = SubResource("CanvasItemMaterial_tb4ck")
 position = Vector2(0, -1.19209e-07)
-scale = Vector2(0.189157, 0.189157)
+scale = Vector2(0.135962, 0.135962)
 texture = SubResource("ViewportTexture_tb4ck")
 region_enabled = true
 region_rect = Rect2(0, 0, 256, 256)

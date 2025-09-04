@@ -59,7 +59,7 @@ func place_ground(cell: Vector2i):
 
 
 func place_prop(cell: Vector2i):
-	print("Placing prop at cell: ", cell)
+	# print("Placing prop at cell: ", cell)
 
 	var biome := get_biome_at(cell)
 	if biome == null: return
@@ -72,7 +72,7 @@ func place_prop(cell: Vector2i):
 		push_error("prop_template not set!")
 		return
 
-	var prop_instance: Node2D = prop_template.instantiate()
+	var prop_instance: StaticBody2D = prop_template.instantiate()
 	prop_instance.z_index = Globals.get_z_index(prop_instance)
 	var sprite := prop_instance.get_node_or_null("Sprite2D") as Sprite2D
 

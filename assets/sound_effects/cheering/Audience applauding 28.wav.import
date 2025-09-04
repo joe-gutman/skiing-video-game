@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://n1dxha6l7wl3"
+path="res://.godot/imported/Audience applauding 28.wav-47e1281a274077e615bf5c38534c91f8.sample"
+
+[deps]
+
+source_file="res://assets/sound_effects/cheering/Audience applauding 28.wav"
+dest_files=["res://.godot/imported/Audience applauding 28.wav-47e1281a274077e615bf5c38534c91f8.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bpy7de01vn3l8"
+path="res://.godot/imported/Small Mouth pop sound.wav-9ab920770be2636c61963e6852c18627.sample"
+
+[deps]
+
+source_file="res://assets/sound_effects/goofy/Small Mouth pop sound.wav"
+dest_files=["res://.godot/imported/Small Mouth pop sound.wav-9ab920770be2636c61963e6852c18627.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

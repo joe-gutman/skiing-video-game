@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cm73sduvrijo7"
+path="res://.godot/imported/8bit attempt.mp3-ecc8c2ddc79b1a9b73ec3810bf3994a8.mp3str"
+
+[deps]
+
+source_file="res://assets/music/8bit attempt.mp3"
+dest_files=["res://.godot/imported/8bit attempt.mp3-ecc8c2ddc79b1a9b73ec3810bf3994a8.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

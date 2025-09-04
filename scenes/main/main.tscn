@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bq3e1in76flvx"]
+[gd_scene load_steps=8 format=3 uid="uid://bq3e1in76flvx"]
 
 [ext_resource type="Script" uid="uid://ihc00xey7udh" path="res://scenes/world/world_generator.gd" id="1_k2fmo"]
 [ext_resource type="Script" uid="uid://c2x8vavlckr72" path="res://scenes/main/sun.gd" id="3_6q06x"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c05mp6v02jr5q" path="res://scenes/prop/prop.tscn" id="3_k2fmo"]
 [ext_resource type="TileSet" uid="uid://0n570eog0y1x" path="res://scenes/world/tileset.tres" id="3_l3cfh"]
 [ext_resource type="Script" uid="uid://biodc7jn0yx5j" path="res://scenes/player/player_camera.gd" id="6_ow5a4"]
+[ext_resource type="AudioStream" uid="uid://cnpfcoefnbob4" path="res://assets/music/InTheMountains-short.ogg" id="7_hujxm"]
 
 [node name="Playfield" type="Node2D" node_paths=PackedStringArray("ground", "props")]
 z_as_relative = false
@@ -32,7 +33,7 @@ z_as_relative = false
 tile_set = ExtResource("3_l3cfh")
 
 [node name="Player" parent="." instance=ExtResource("3_dnc2d")]
-mass = 2.75
+mass = 5.0
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(1, -8)
@@ -48,3 +49,9 @@ drag_bottom_margin = 0.0
 script = ExtResource("6_ow5a4")
 
 [node name="Props" type="Node2D" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_hujxm")
+volume_db = -1.0
+pitch_scale = 0.9
+autoplay = true

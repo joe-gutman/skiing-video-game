@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dhywp8oyvja6g"
+path="res://.godot/imported/EFX SD Sliding Whoosh By 34.wav-5417e16cacde3aefe39e7dd3be3d86ee.sample"
+
+[deps]
+
+source_file="res://assets/sound_effects/woosh/EFX SD Sliding Whoosh By 34.wav"
+dest_files=["res://.godot/imported/EFX SD Sliding Whoosh By 34.wav-5417e16cacde3aefe39e7dd3be3d86ee.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
