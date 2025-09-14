@@ -1,14 +1,22 @@
 extends RefCounted
 class_name GameWorld
 
-# Biome Voronoi control:
-var biome_voronoi := FastNoiseLite.new()
 
-# Noise distortion (warp Voronoi to look like clouds):
-var warp_amp := 100.0
-var warp_noise := FastNoiseLite.new()
+# Voronoi Biome Controls
+var voronoi_frequency: float = 1.0 / 100.0  # region size (lower = bigger regions)
+var voronoi_distance_fn: int = FastNoiseLite.DISTANCE_EUCLIDEAN
+var warp_amp: float = 100.0                 # how strong domain warp is
+var warp_frequency: float = 1.0 / 400.0     # how wiggly borders are
 
+# Corridor blending
+var border_threshold: float = 0.1           # near borders → allow blending
+
+# Slope frequency
 var slope_frequency: float = 0.1
+
+
+var biome_voronoi := FastNoiseLite.new()
+var warp_noise := FastNoiseLite.new()
 
 var name: String
 var biomes: Dictionary
@@ -26,16 +34,16 @@ func _init(name: String, seed: int = 0) -> void:
 	self.slope_instances = []
 	rng = RandomNumberGenerator.new()
 
-	# init warp noise (simplex used to distort Voronoi)
+	# init warp noise
 	warp_noise.seed = int(rng.seed) ^ 0x5a5a
 	warp_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
-	warp_noise.frequency = 1.0 / 400.0
+	warp_noise.frequency = warp_frequency
 
 	# Voronoi noise for biome regions
 	biome_voronoi.seed = self.seed
 	biome_voronoi.noise_type = FastNoiseLite.TYPE_CELLULAR
-	biome_voronoi.cellular_distance_function = FastNoiseLite.DISTANCE_EUCLIDEAN
-	biome_voronoi.frequency = 1.0 / 100.0  # region size
+	biome_voronoi.cellular_distance_function = voronoi_distance_fn
+	biome_voronoi.frequency = voronoi_frequency
 
 	if seed == 0:
 		rng.randomize()
@@ -43,18 +51,16 @@ func _init(name: String, seed: int = 0) -> void:
 	else:
 		rng.seed = seed
 
-
-# Add biomes to dictionary (still used for indexing + props)
 func add_biome(
-		biome: WorldBiome,
-		weight: float = 1.0,
-		scale: float = 1.0,
-		octaves: int = 1,
-		persistence: float = 0.5,
-		lacunarity: float = 2.0,
-		width: float = 1.0,
-		length: float = 1.0
-	) -> void:
+	biome: WorldBiome,
+	weight: float = 1.0,
+	scale: float = 1.0,
+	octaves: int = 1,
+	persistence: float = 0.5,
+	lacunarity: float = 2.0,
+	width: float = 1.0,
+	length: float = 1.0
+) -> void:
 	if not (biome is WorldBiome):
 		push_error("Biome must be a WorldBiome type but got %s." % typeof(biome))
 		return
@@ -63,7 +69,7 @@ func add_biome(
 		push_error("Biome with name '%s' already exists." % biome.name)
 		return
 
-	# Keep noise data for local variation if you want to use it inside biomes
+	# Keep noise data for local variation inside biomes
 	var noise := _make_noise(scale, octaves, persistence, lacunarity)
 
 	self.biomes[biome.name] = {
@@ -77,7 +83,6 @@ func add_biome(
 		"persistence": persistence,
 		"lacunarity": lacunarity
 	}
-
 
 func add_biomes(biomes_list: Array) -> void:
 	for biome in biomes_list:
@@ -95,38 +100,62 @@ func get_biomes() -> Array:
 		biome_array.append(biome_data["biome"])
 	return biome_array
 
-
 func get_biome_at(cell: Vector2i) -> WorldBiome:
 	if biomes.is_empty():
 		return null
 
-	var best_biome: WorldBiome = null
-	var best_val := 999999.0
-	var i := 0
+	var x: float = cell.x
+	var y: float = cell.y
 
-	for biome_data in biomes.values():
-		var biome: WorldBiome = biome_data["biome"]
+	# Warp input
+	if warp_amp > 0.0:
+		var wx: float = warp_noise.get_noise_2d(x, y)
+		var wy: float = warp_noise.get_noise_2d(x + 1337.0, y - 7331.0)
+		x += wx * warp_amp
+		y += wy * warp_amp
 
-		# Warp input for organic shapes
-		var x: float = cell.x
-		var y: float = cell.y
-		if warp_amp > 0.0:
-			var wx := warp_noise.get_noise_2d(x, y)
-			var wy := warp_noise.get_noise_2d(x + 1337.0, y - 7331.0)
-			x += wx * warp_amp
-			y += wy * warp_amp
+	# --- Step 1: approximate nearest & second-nearest distances ---
+	var distances: Array = []
+	for dx in [-5, 0, 5]:
+		for dy in [-5, 0, 5]:
+			var d = biome_voronoi.get_noise_2d(x + dx, y + dy)
+			distances.append(d)
+	distances.sort()
+	var d1: float = distances[0]
+	var d2: float = distances[1]
 
-		# Sample Voronoi field for this biome (offset per biome so regions differ)
-		var n := biome_voronoi.get_noise_2d(x + i * 1000.0, y - i * 2000.0)
+	# --- Step 2: stable biome IDs ---
+	var cell_id1: int = _hash_cell(int(floor(x / 100.0)), int(floor(y / 100.0)))
+	var idx1: int = cell_id1 % biomes.size()
 
-		# Lower = closer to Voronoi cell center
-		if n < best_val:
-			best_val = n
-			best_biome = biome
+	var cell_id2: int = _hash_cell(int(floor(x / 100.0)) + 1, int(floor(y / 100.0)) + 1)
+	var idx2: int = cell_id2 % biomes.size()
 
-		i += 1
+	var biome1: WorldBiome = biomes.values()[idx1]["biome"]
+	var biome2: WorldBiome = biomes.values()[idx2]["biome"]
 
-	return best_biome
+	# --- Step 3: normalized ratio ---
+	var ratio: float = d1 / max((d1 + d2), 0.0001)
+
+	if ratio > 0.5 + border_threshold:
+		return biome1
+	elif ratio < 0.5 - border_threshold:
+		return biome2
+	else:
+		# --- Step 4: probabilistic flip inside band ---
+		var w1: float = 1.0 / max(d1, 0.001)
+		var w2: float = 1.0 / max(d2, 0.001)
+		var total: float = w1 + w2
+		var p1: float = w1 / total
+
+		if rng.randf() < p1:
+			return biome1
+		else:
+			return biome2
+
+func _hash_cell(x: int, y: int) -> int:
+	# Simple hash for stable biome assignment per Voronoi cell
+	return int(((x * 73856093) ^ (y * 19349663) ^ seed) & 0x7fffffff)
 
 func add_slope(slope: WorldSlope) -> void:
 	if not (slope is WorldSlope):
@@ -163,11 +192,11 @@ func get_slopes() -> Array:
 	return self.slopes.values()
 
 func _make_noise(
-		scale: float = 1.0,
-		octaves: int = 1,
-		persistence: float = 0.5,
-		lacunarity: float = 2.0
-	) -> FastNoiseLite:
+	scale: float = 1.0,
+	octaves: int = 1,
+	persistence: float = 0.5,
+	lacunarity: float = 2.0
+) -> FastNoiseLite:
 	var noise := FastNoiseLite.new()
 	noise.seed = rng.seed
 	noise.frequency = 1.0 / scale

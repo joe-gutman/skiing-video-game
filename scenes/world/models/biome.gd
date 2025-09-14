@@ -76,10 +76,10 @@ func get_ground_asset(rng: RandomNumberGenerator) -> WorldAsset:
 func get_random_asset(rng: RandomNumberGenerator) -> WorldAsset:
 	# 1) Biome-wide sparsity gate
 	if rng.randf() > pow(self.density, RNG_POWER):
-		print("Biome ", name, ": density gate failed")
+		# print("Biome ", name, ": density gate failed")
 		return null
-	else: 
-		print("Biome ", name, ": density gate passed")
+	# else: 
+	# 	print("Biome ", name, ": density gate passed")
 
 	# 2) Weighted selection of asset groups
 	var candidates: Array = []   # [{ "group": AssetGroup, "weight": float }]
@@ -89,11 +89,11 @@ func get_random_asset(rng: RandomNumberGenerator) -> WorldAsset:
 		total_weight += float(entry["weight"])
 
 	if total_weight <= 0.0:
-		print("Biome ", name, ": no valid asset groups")
+		# print("Biome ", name, ": no valid asset groups")
 		return null
 
 	var choice_point := rng.randf() * total_weight
-	print("Biome ", name, ": choice_point=", choice_point, " total_weight=", total_weight)
+	# print("Biome ", name, ": choice_point=", choice_point, " total_weight=", total_weight)
 
 	var running_total := 0.0
 	var selected_group: AssetGroup = null
@@ -101,7 +101,7 @@ func get_random_asset(rng: RandomNumberGenerator) -> WorldAsset:
 		running_total += float(entry["weight"])
 		if choice_point < running_total:
 			selected_group = entry["group"]
-			print("Biome ", name, ": selected group=", selected_group.name)
+			# print("Biome ", name, ": selected group=", selected_group.name)
 			break
 
 	# 3) Ask that group for an asset

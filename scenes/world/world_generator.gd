@@ -107,7 +107,7 @@ func _place_asset(cell: Vector2i, biome: WorldBiome):
 
 	match asset.type:
 		"sprite":
-			print("Placing asset '%s' at cell %s" % [asset.name, cell])
+			# print("Placing asset '%s' at cell %s" % [asset.name, cell])
 			var instance: StaticBody2D = asset_template.instantiate()
 			instance.z_index = Globals.get_z_index(instance)
 
