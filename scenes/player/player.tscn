@@ -1,10 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://xl2daaugr31l"]
+[gd_scene load_steps=10 format=3 uid="uid://xl2daaugr31l"]
 
 [ext_resource type="Material" uid="uid://b6es0e5nho5cx" path="res://scenes/player/ski_trail.tres" id="1_l2tcj"]
 [ext_resource type="Script" uid="uid://bimce42ubbvme" path="res://scenes/player/player.gd" id="2_2753n"]
 [ext_resource type="PackedScene" uid="uid://d4mlpn3vfktr3" path="res://scenes/player/model/model_character_ski.glb" id="3_3bosa"]
 [ext_resource type="Shader" uid="uid://4vosdb187ynf" path="res://assets/shaders/shadow_catcher.gdshader" id="4_rxkqc"]
-[ext_resource type="Script" uid="uid://bpsnvs3x3u5m7" path="res://assets/scripts/shadow_toggle.gd" id="5_p47bc"]
 
 [sub_resource type="Environment" id="Environment_p47bc"]
 background_energy_multiplier = 0.27
@@ -64,7 +63,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 1.06581e-14, 0, -1.06581e-14, 1, -0.00077
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00158167, -0.026879, 0.000453651)
 mesh = SubResource("PlaneMesh_kwvpd")
 surface_material_override/0 = SubResource("ShaderMaterial_op4fd")
-script = ExtResource("5_p47bc")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 light_mask = 2

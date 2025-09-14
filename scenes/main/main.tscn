@@ -1,21 +1,79 @@
-[gd_scene load_steps=8 format=3 uid="uid://bq3e1in76flvx"]
+[gd_scene load_steps=11 format=3 uid="uid://bq3e1in76flvx"]
 
-[ext_resource type="Script" uid="uid://ihc00xey7udh" path="res://scenes/world/world_generator.gd" id="1_k2fmo"]
-[ext_resource type="Script" uid="uid://c2x8vavlckr72" path="res://scenes/main/sun.gd" id="3_6q06x"]
+[ext_resource type="Script" uid="uid://c28cojaxxl3ke" path="res://scenes/world/world_generator.gd" id="1_ow5a4"]
+[ext_resource type="PackedScene" uid="uid://c05mp6v02jr5q" path="res://scenes/asset/asset.tscn" id="2_hujxm"]
+[ext_resource type="Script" uid="uid://hkhskrm1tt3u" path="res://scenes/main/crt_viewport.gd" id="3_b1x3f"]
 [ext_resource type="PackedScene" uid="uid://xl2daaugr31l" path="res://scenes/player/player.tscn" id="3_dnc2d"]
-[ext_resource type="PackedScene" uid="uid://c05mp6v02jr5q" path="res://scenes/prop/prop.tscn" id="3_k2fmo"]
-[ext_resource type="TileSet" uid="uid://0n570eog0y1x" path="res://scenes/world/tileset.tres" id="3_l3cfh"]
-[ext_resource type="Script" uid="uid://biodc7jn0yx5j" path="res://scenes/player/player_camera.gd" id="6_ow5a4"]
+[ext_resource type="TileSet" uid="uid://0n570eog0y1x" path="res://scenes/world/tile_set.tres" id="3_l3cfh"]
+[ext_resource type="Shader" uid="uid://c0g06wi3ic2pf" path="res://assets/shaders/crt.gdshader" id="3_yyfjg"]
 [ext_resource type="AudioStream" uid="uid://cnpfcoefnbob4" path="res://assets/music/InTheMountains-short.ogg" id="7_hujxm"]
 
-[node name="Playfield" type="Node2D" node_paths=PackedStringArray("ground", "props")]
-z_as_relative = false
-script = ExtResource("1_k2fmo")
-prop_template = ExtResource("3_k2fmo")
-ground = NodePath("Ground")
-props = NodePath("Props")
+[sub_resource type="ViewportTexture" id="ViewportTexture_yyfjg"]
+viewport_path = NodePath("Control/ColorRect/SubViewport")
 
-[node name="Sun" type="DirectionalLight3D" parent="."]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b1x3f"]
+resource_local_to_scene = true
+shader = ExtResource("3_yyfjg")
+shader_parameter/tex = SubResource("ViewportTexture_yyfjg")
+shader_parameter/mask_type = 1
+shader_parameter/curve = 0.085
+shader_parameter/sharpness = 0.898
+shader_parameter/color_offset = -0.069
+shader_parameter/mask_brightness = 0.894
+shader_parameter/scanline_brightness = 0.956
+shader_parameter/min_scanline_thickness = 0.93
+shader_parameter/aspect = 0.885
+shader_parameter/wobble_strength = 0.0
+shader_parameter/pixel_ratio = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_yyfjg"]
+font_size = 17
+font_color = Color(1, 0, 0, 1)
+
+[node name="Playfield" type="Node2D" node_paths=PackedStringArray("player", "player_camera", "ground", "assets_container")]
+z_as_relative = false
+script = ExtResource("1_ow5a4")
+player = NodePath("Control/ColorRect/SubViewport/Player")
+player_camera = NodePath("Control/ColorRect/SubViewport/Player/Camera2D")
+ground = NodePath("Control/ColorRect/SubViewport/Ground")
+assets_container = NodePath("Control/ColorRect/SubViewport/Assets")
+asset_template = ExtResource("2_hujxm")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_b1x3f")
+resolution_scale = 0.65
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_b1x3f")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="Control/ColorRect"]
+size = Vector2i(825, 460)
+
+[node name="DebugLabel" type="Label" parent="Control/ColorRect/SubViewport"]
+z_index = 4096
+offset_left = 120.0
+offset_top = 99.0
+offset_right = 582.0
+offset_bottom = 279.0
+label_settings = SubResource("LabelSettings_yyfjg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sun" type="DirectionalLight3D" parent="Control/ColorRect/SubViewport"]
 transform = Transform3D(-0.835343, 0.243471, -0.492874, -0.180446, 0.725459, 0.664191, 0.519271, 0.643764, -0.562073, -2.34108, 3.59592, -1.8559)
 shadow_enabled = true
 shadow_bias = 0.0
@@ -25,20 +83,22 @@ shadow_blur = 0.02
 directional_shadow_split_3 = 0.039
 directional_shadow_fade_start = 0.0
 directional_shadow_max_distance = 234.3
-script = ExtResource("3_6q06x")
 
-[node name="Ground" type="TileMapLayer" parent="."]
+[node name="Ground" type="TileMapLayer" parent="Control/ColorRect/SubViewport"]
 z_index = -4096
 z_as_relative = false
+tile_map_data = PackedByteArray(0, 0, 155, 0, 150, 0, 0, 0, 3, 0, 0, 0, 0, 0)
 tile_set = ExtResource("3_l3cfh")
 
-[node name="Player" parent="." instance=ExtResource("3_dnc2d")]
+[node name="Player" parent="Control/ColorRect/SubViewport" instance=ExtResource("3_dnc2d")]
+collision_layer = 1
+collision_mask = 1
 mass = 5.0
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Camera2D" type="Camera2D" parent="Control/ColorRect/SubViewport/Player"]
 position = Vector2(1, -8)
 scale = Vector2(0.996517, 1)
-zoom = Vector2(1.5, 1.5)
+zoom = Vector2(0.16, 0.16)
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
@@ -46,12 +106,11 @@ drag_horizontal_enabled = true
 drag_vertical_enabled = true
 drag_vertical_offset = 1.0
 drag_bottom_margin = 0.0
-script = ExtResource("6_ow5a4")
 
-[node name="Props" type="Node2D" parent="."]
+[node name="Assets" type="Node2D" parent="Control/ColorRect/SubViewport"]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ColorRect/SubViewport"]
 stream = ExtResource("7_hujxm")
-volume_db = -1.0
+volume_db = -1.15
 pitch_scale = 0.9
 autoplay = true

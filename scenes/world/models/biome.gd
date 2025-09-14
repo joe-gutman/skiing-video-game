@@ -2,9 +2,13 @@ extends RefCounted
 class_name WorldBiome
 
 var name: String
-var biome_tileset: TileSet
-var biome_density: float
-var layers: Dictionary    # { LayerType: { "layer": BiomeLayer, "weight": float }, ... }
+var tile_set: TileSet
+var density: float
+var width: float
+var length: float
+
+var ground: AssetGroup                # Always required
+var assets: Dictionary = {}           # { String: { "group": AssetGroup, "weight": float } }
 
 # Environmental metadata
 var weather: String
@@ -19,9 +23,12 @@ const RNG_POWER = 1
 
 func _init(
 		name: String,
-		biome_tileset: TileSet,
-		biome_density: float,
-		layers: Dictionary,
+		tile_set: TileSet,
+		density: float,
+		width: float,
+		length: float,
+		ground: AssetGroup,
+		assets: Dictionary = {},       # { name: { "group": AssetGroup, "weight": float } }
 		weather: String = "clear",
 		temperature: int = 0,
 		ambient_sounds: Array = [],
@@ -31,15 +38,29 @@ func _init(
 	) -> void:
 
 	self.name = name
-	self.biome_tileset = biome_tileset
-	self.biome_density = biome_density
+	self.tile_set = tile_set
+	self.density = density
+	self.width = width
+	self.length = length
 	self.notes = notes
-	self.layers = {}
 
-	if layers.is_empty():
-		push_error("Biome '%s' must define at least one layer!" % name)
-		return
-	add_layers(layers)
+	# Ground is required
+	if ground == null:
+		push_error("Biome '%s' must define a ground group!" % name)
+	else:
+		self.ground = ground
+
+	# Assets (optional, e.g. trees, bushes, rocks, decorations)
+	self.assets = {}
+	for k in assets.keys():
+		var entry = assets[k]
+		if not entry.has("group") or not (entry["group"] is AssetGroup):
+			push_error("Invalid asset group '%s' in biome '%s'" % [k, name])
+			continue
+		self.assets[k] = {
+			"group": entry["group"],
+			"weight": float(entry.get("weight", 1.0))
+		}
 
 	self.weather = weather
 	self.temperature = temperature
@@ -47,73 +68,41 @@ func _init(
 	self.sky_color = sky_color
 	self.fog_color = fog_color
 
-func add_layer(layer: BiomeLayer, layer_weight: float = 0.5) -> void:
-	if not (layer is BiomeLayer):
-		push_error("Layer must be a Layer type but got %s." % typeof(layer))
-		return
-	if self.layers.has(layer.get_layer_type()):
-		push_error("Layer with layer_type '%s' already exists." % layer.get_layer_type())
-		return
-	self.layers[layer.get_layer_type()] = {
-		"layer": layer,
-		"weight": layer_weight
-	}
 
-func add_layers(layers: Dictionary) -> void:
-	for layer in layers.values():
-		add_layer(layer["layer"], layer["weight"])
- 
-func get_layers() -> Array:
-	return self.layers.values()
+func get_ground_asset(rng: RandomNumberGenerator) -> WorldAsset:
+	return ground.get_random_asset(rng) if ground != null else null
 
-func get_layer(layer_type: int) -> BiomeLayer:
-	if self.layers.has(layer_type):
-		return self.layers[layer_type]["layer"]
-	return null
 
-func get_ground_tile(rng: RandomNumberGenerator) -> LayerTile:
-	if self.layers.has(BiomeLayer.LayerType.GROUND):
-		return self.layers[BiomeLayer.LayerType.GROUND]["layer"].get_random_tile(rng)
-	return null
-
-func get_random_prop(rng: RandomNumberGenerator) -> LayerTile:
-	var selected_layer: BiomeLayer
-
+func get_random_asset(rng: RandomNumberGenerator) -> WorldAsset:
 	# 1) Biome-wide sparsity gate
-	if rng.randf() > pow(self.biome_density, RNG_POWER):
+	if rng.randf() > pow(self.density, RNG_POWER):
+		print("Biome ", name, ": density gate failed")
 		return null
+	else: 
+		print("Biome ", name, ": density gate passed")
 
-	# 2) Build candidates = non-ground layers only
-	var candidates: Array = []           # [{ "layer": BiomeLayer, "weight": float }, ...]
+	# 2) Weighted selection of asset groups
+	var candidates: Array = []   # [{ "group": AssetGroup, "weight": float }]
 	var total_weight := 0.0
-	for entry in self.layers.values():
-		var L: BiomeLayer = entry["layer"]
-		if L.get_layer_type() == BiomeLayer.LayerType.GROUND:
-			continue
+	for entry in self.assets.values():
 		candidates.append(entry)
 		total_weight += float(entry["weight"])
 
 	if total_weight <= 0.0:
+		print("Biome ", name, ": no valid asset groups")
 		return null
 
-	# 3) Pick a candidate layer by its weight
 	var choice_point := rng.randf() * total_weight
+	print("Biome ", name, ": choice_point=", choice_point, " total_weight=", total_weight)
+
 	var running_total := 0.0
+	var selected_group: AssetGroup = null
 	for entry in candidates:
 		running_total += float(entry["weight"])
 		if choice_point < running_total:
-			selected_layer = entry["layer"]
+			selected_group = entry["group"]
+			print("Biome ", name, ": selected group=", selected_group.name)
 			break
 
-	# 4) Ask that layer for a tile (layer's own density applies inside)
-	return selected_layer.get_random_tile(rng) if selected_layer != null else null
-
-
-
-
-# placeholder for getting temp and converting if needed
-# func get_temp() -> float:
-#    if user_data.get("temp_unit", "farenheit") == "celcius":
-#       return (self.temperature - 32.0) * 5.0 / 9.0
-#    else:
-#       return self.temperature
+	# 3) Ask that group for an asset
+	return selected_group.get_random_asset(rng) if selected_group != null else null

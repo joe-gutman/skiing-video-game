@@ -1,0 +1,34 @@
+{
+  "basic_run": {
+    "name": "Basic Run (Wave)",
+    "notes": "Wave-shaped corridor using ground tiles only.",
+    "tile_set": "res://scenes/world/tile_set.tres",
+    "src_id": 0,
+
+    "track": {
+      "width": 16,
+      "length": 220
+    },
+
+    "ground": {
+      "density": 1.0,
+      "weight": 1.0,
+      "tiles": [
+        { "name": "snow_packed", "weight": 5 },
+        { "name": "snow_packed_variation", "weight": 1 }
+      ]
+    },
+
+    "props": {
+      "decorations": {
+        "density": 0.05,
+        "weight": 0.5,
+        "tiles": [
+          { "name": "snowman", "weight": 0.2 }
+        ]
+      }
+    },
+
+    "weight": 1.0
+  }
+}

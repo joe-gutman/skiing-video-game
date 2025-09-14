@@ -7,9 +7,11 @@ func to_godot_zoom(intuitive_zoom: float) -> float:
 
 func _ready() -> void:
 	# Apply starting zoom immediately
+	set_process_input(true)
 	zoom = Vector2(to_godot_zoom(current_zoom), to_godot_zoom(current_zoom))
 
 func _input(event: InputEvent) -> void:
+	print("Input event: ", event)
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			# zoom in (decrease intuitive zoom value)
