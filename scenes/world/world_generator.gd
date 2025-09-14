@@ -73,7 +73,7 @@ func _update_cells(old_bounds: Rect2i, new_bounds: Rect2i) -> void:
 				visited_cells.append(cell)
 
 func _build_cell(cell: Vector2i):
-	var biome := world.get_biome_blended(cell)
+	var biome := world.get_biome_at(cell)
 	if biome == null:
 		return
 	biome_cells[cell] = biome
